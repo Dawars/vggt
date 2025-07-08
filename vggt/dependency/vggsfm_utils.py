@@ -12,7 +12,7 @@ import numpy as np
 import pycolmap
 import torch
 import torch.nn.functional as F
-from lightglue import ALIKED, SIFT, SuperPoint
+from lightglue import ALIKED, SIFT, SuperPoint, DISK
 
 from .vggsfm_tracker import TrackerPredictor
 
@@ -210,6 +210,9 @@ def initialize_feature_extractors(max_query_num, det_thres=0.005, extractor_meth
         elif method == "sp":
             sp_extractor = SuperPoint(max_num_keypoints=max_query_num, detection_threshold=det_thres)
             extractors["sp"] = sp_extractor.to(device).eval()
+        elif method == "disk":
+            disk_extractor = DISK(max_num_keypoints=max_query_num)
+            extractors["disk"] = disk_extractor.to(device).eval()
         elif method == "sift":
             sift_extractor = SIFT(max_num_keypoints=max_query_num)
             extractors["sift"] = sift_extractor.to(device).eval()
